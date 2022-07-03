@@ -11,30 +11,30 @@ public class Main {
     public static void main(String[] args) {
 
         //Три игры для сохранения:
-        GameProgress gameProgress1 = new GameProgress(10, 3, 2, 152.4);
-        GameProgress gameProgress2 = new GameProgress(100, 5, 8, 1500);
-        GameProgress gameProgress3 = new GameProgress(50, 3, 3, 201);
+        GameProgress gameProgress[] = {
+                new GameProgress(10, 3, 2, 152.4),
+                new GameProgress(100, 5, 8, 1500),
+                new GameProgress(50, 3, 3, 201)
+        };
 
         //Сохранение игры в папку savegame:
         //Путь до основной папки:
         String pathToSave = "D://GAME_JAVA//savegames";
-        //Пути с именами файлов для сохранения:
-        String pathToSave1 = pathToSave + "//save1.dat";
-        String pathToSave2 = pathToSave + "//save2.dat";
-        String pathToSave3 = pathToSave + "//save3.dat";
 
-        //Вызов функций сохранения:
-        saveGame(pathToSave1, gameProgress1);
-        saveGame(pathToSave2, gameProgress2);
-        saveGame(pathToSave3, gameProgress3);
+        for (int i = 0; i < gameProgress.length; i++) {
+            String path = pathToSave + "//save" + (i + 1) + ".dat";
+            saveGame(path, gameProgress[i]);
+        }
         //__________
 
-
-        //Список файлов для архивирования:
+        //Список файлов для архивирования (все файлы .dat в каталоге):
+        File dirToSave = new File(pathToSave);
         java.util.List<String> listSaves = new ArrayList<>();
-        listSaves.add(pathToSave1);
-        listSaves.add(pathToSave2);
-        listSaves.add(pathToSave3);
+        for (File fileName : dirToSave.listFiles()) {
+            if (fileName.getName().endsWith("dat")) {
+                listSaves.add(pathToSave + "//" + fileName.getName());
+            }
+        }
         //Путь с именем файла создаваемого архива:
         String pathZipFile = pathToSave + "//ZipSaves.zip";
         //Вызов функции архивирования:
@@ -42,7 +42,6 @@ public class Main {
         //__________
 
         //Удаление файлов сохранений (.dat):
-        File dirToSave = new File(pathToSave);
         System.out.println("Каталог savegames содержит:");
         for (File fileName : dirToSave.listFiles()) {
             System.out.println(fileName);
